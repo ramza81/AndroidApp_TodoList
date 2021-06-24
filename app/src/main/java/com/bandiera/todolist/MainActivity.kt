@@ -26,11 +26,11 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
-    val RC_SIGN_IN = 1000
+    private val RC_SIGN_IN = 1000
 
     private lateinit var binding: ActivityMainBinding
 
-    val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
