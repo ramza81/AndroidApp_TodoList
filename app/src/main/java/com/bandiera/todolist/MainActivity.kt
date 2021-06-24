@@ -6,9 +6,8 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.view.*
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.MutableLiveData
@@ -64,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.addButton.setOnClickListener {
-            val todo = Todo(binding.todoEditText.text.toString(), false)
+            val todo = Todo(binding.todoEditText.text, false)
             viewModel.addTodo(todo)
 //            binding.todoRecyclerView.adapter?.notifyDataSetChanged()
             binding.todoEditText.text = null
@@ -129,7 +128,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-data class Todo(val title: String, var isComplete: Boolean = false)
+data class Todo(val title: Editable, var isComplete: Boolean)
 
 
 class TodoAdapter(
