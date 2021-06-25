@@ -6,9 +6,7 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
 import android.view.*
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -21,7 +19,6 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -63,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.addButton.setOnClickListener {
-            val todo = Todo(binding.todoEditText.text, false)
+            val todo = Todo(binding.todoEditText.text.toString(), false)
             viewModel.addTodo(todo)
 //            binding.todoRecyclerView.adapter?.notifyDataSetChanged()
             binding.todoEditText.text = null
@@ -128,7 +125,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-data class Todo(val title: Editable, var isComplete: Boolean)
+data class Todo(val title: String, var completed: Boolean)
 
 
 class TodoAdapter(
@@ -152,7 +149,7 @@ class TodoAdapter(
 
         viewHolder.binding.apply {
             titleTextView.text = todo.getString("title") ?: ""
-            val isComplete : Boolean = todo.getBoolean("isComplete") ?: false
+            val isComplete : Boolean = todo.getBoolean("completed") ?: false
 
             if (isComplete) {
                 titleTextView.paintFlags = titleTextView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
@@ -227,7 +224,7 @@ class MainViewModel : ViewModel() {
     fun toggleTodo(todo: DocumentSnapshot) {
         FirebaseAuth.getInstance().currentUser?.let { user ->
             db.collection(user.uid).document(todo.id)
-                .update("isComplete", !(todo.getBoolean("isComplete") ?: false))
+                .update("completed", !(todo.getBoolean("completed") ?: false))
         }
     }
 
